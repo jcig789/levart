@@ -285,7 +285,7 @@ function renderCompose(
 
 	const renderBudgetSummary = () => {
 		summaryContainer.empty();
-		const allStops = trip.days.flatMap(d => d.slots);
+		const allStops: import("../types").TripSlot[] = trip.days.flatMap(d => d.slots);
 
 		// Group stops by their effective currency — do not mix across currencies
 		const byCurrency = new Map<string, { estimate: number; actual: number; count: number }>();
@@ -363,8 +363,8 @@ function buildFrontmatter(
 	fields: FrontmatterField[],
 	custom: CustomFrontmatterEntry[]
 ): string[] {
-	const totalPhotos = trip.days.flatMap(d => d.slots.flatMap(s => s.photos)).length;
-	const totalStops  = trip.days.flatMap(d => d.slots).length;
+	const totalPhotos: number = trip.days.flatMap(d => d.slots.flatMap(s => s.photos)).length;
+	const totalStops: number = trip.days.flatMap(d => d.slots).length;
 	const totalDays   = trip.days.length;
 
 	// Use default (all enabled) when no settings passed
@@ -475,8 +475,8 @@ async function generateFolio(
 ): Promise<void> {
 	const lines: string[] = [];
 
-	const totalPhotos = trip.days.flatMap(d => d.slots.flatMap(s => s.photos)).length;
-	const totalStops  = trip.days.flatMap(d => d.slots).length;
+	const totalPhotos: number = trip.days.flatMap(d => d.slots.flatMap(s => s.photos)).length;
+	const totalStops: number = trip.days.flatMap(d => d.slots).length;
 	const totalDays   = trip.days.length;
 
 	const enabled = frontmatterFields.length > 0

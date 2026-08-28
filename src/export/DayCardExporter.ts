@@ -356,7 +356,7 @@ export async function exportDayCard(
 	// It works across all current platforms but could break without notice on Obsidian updates.
 	// Replace with an official API when one is available; the catch block handles failure gracefully.
 	try {
-		(app as any).openWithDefaultApp(filePath);
+		(app as App & { openWithDefaultApp: (path: string) => void }).openWithDefaultApp(filePath);
 		new Notice(isUpdate ? "Day card updated. Reload the open tab if needed." : "Day card ready. Print or save as PDF from your browser.");
 	} catch {
 		new Notice(`Saved to ${filePath} — open in a browser to print.`);

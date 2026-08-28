@@ -4,9 +4,9 @@ import type { SlotCategory } from "./types";
 
 export const HOUR_HEIGHT = 64;
 
-// Safe UUID — avoids TypeScript unsafe-call on randomId()
+// Safe UUID — uses window.crypto for popout window compatibility
 export function randomId(): string {
-	return (globalThis.crypto as { randomUUID: () => string }).randomUUID();
+	return (window.crypto as { randomUUID: () => string }).randomUUID();
 }
 
 export function slugify(str: string): string {
@@ -92,7 +92,7 @@ export function extensionFromFile(file: File): string {
 export function timestampFilename(prefix: string, ext = "jpg"): string {
 	const d = new Date();
 	const ts = [
-		d.getFullYear(),
+		String(d.getFullYear()),
 		String(d.getMonth() + 1).padStart(2, "0"),
 		String(d.getDate()).padStart(2, "0"),
 		"_",

@@ -1,4 +1,4 @@
-import { App, Vault, TAbstractFile } from "obsidian";
+import { App, Vault } from "obsidian";
 import { normalizePath } from "obsidian";
 import type { Trip } from "./types";
 import { migrateTrip, tripDataPath, tripFolderPath } from "./utils";
@@ -7,7 +7,8 @@ export async function loadTrip(vault: Vault, tripsFolder: string, tripId: string
 	const path = tripDataPath(tripsFolder, tripId);
 	if (!await vault.adapter.exists(path)) return null;
 	const raw = await vault.adapter.read(path);
-	return migrateTrip(JSON.parse(raw));
+	const parsed = JSON.parse(raw) as Record<string, unknown>;
+	return migrateTrip(parsed);
 }
 
 export async function saveTrip(vault: Vault, tripsFolder: string, trip: Trip): Promise<void> {
@@ -43,8 +44,8 @@ export async function listTrips(vault: Vault, tripsFolder: string): Promise<Trip
 
 export async function deleteTrip(app: App, tripsFolder: string, tripId: string): Promise<void> {
 	const folder = tripFolderPath(tripsFolder, tripId);
-	const abstractFolder: TAbstractFile | null = app.vault.getAbstractFileByPath(folder);
+	const abstractFolder = app.vault.getAbstractFileByPath(folder);
 	if (abstractFolder) {
-		await app.vault.delete(abstractFolder, true);
+		await app.fileManager.trashFile(abstractFolder);
 	}
 }

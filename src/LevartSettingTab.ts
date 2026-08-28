@@ -62,7 +62,7 @@ export class LevartSettingTab extends PluginSettingTab {
 			if (!knownKeys.includes(field.key)) return; // skip stale entries
 			new Setting(containerEl)
 				.setName(field.key)
-				.setDesc(FIELD_DESCRIPTIONS[field.key] ?? "")
+				.setDesc(Object.prototype.hasOwnProperty.call(FIELD_DESCRIPTIONS, field.key) ? FIELD_DESCRIPTIONS[field.key] : "")
 				.addToggle(toggle => toggle
 					.setValue(field.enabled)
 					.onChange(async (value) => {
