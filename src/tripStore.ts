@@ -45,6 +45,6 @@ export async function deleteTrip(app: App, tripsFolder: string, tripId: string):
 	const folder = tripFolderPath(tripsFolder, tripId);
 	const abstractFolder = app.vault.getAbstractFileByPath(folder);
 	if (abstractFolder instanceof TFolder) {
-		await app.fileManager.trashFile(abstractFolder);
+		await app.vault.trash(abstractFolder, true);
 	}
 }

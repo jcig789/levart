@@ -61,8 +61,7 @@ function showConfirmOverlay(
 	const grid = section.createDiv({ cls: "lv-roll-grid lv-roll-grid-multi" });
 	files.forEach(file => {
 		const cell = grid.createDiv({ cls: "lv-roll-cell" });
-		const img = cell.createEl("img");
-		img.style.cssText = "width:56px;height:56px;object-fit:cover;display:block;";
+		const img = cell.createEl("img", { cls: "lv-roll-thumb" });
 		const reader = new FileReader();
 		reader.onload = (e) => { if (e.target?.result) img.src = e.target.result as string; };
 		reader.readAsDataURL(file);

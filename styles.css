@@ -2765,20 +2765,47 @@
   margin-bottom: 12px;
   width: 244px;
 }
-.lv-contact-sheet .lv-photo-cell {
+/* Featured variant — first column is 162px */
+.lv-contact-sheet-featured {
+  display: grid;
+  grid-template-columns: 162px 80px 80px;
+  grid-auto-rows: 80px;
+  gap: 2px;
+  margin-bottom: 12px;
+  width: auto;
+}
+.lv-contact-sheet .lv-photo-cell,
+.lv-contact-sheet-featured .lv-photo-cell {
   width: 80px;
   height: 80px;
   overflow: hidden;
   background: var(--lv-rule);
 }
-.lv-contact-sheet .lv-photo-cell img {
+.lv-contact-sheet-featured .lv-photo-featured {
+  width: 162px;
+  height: 162px;
+  grid-row: span 2;
+}
+/* Standard photo image */
+.lv-photo-img {
   width: 80px;
   height: 80px;
   object-fit: cover;
   display: block;
   transition: opacity 200ms ease;
 }
-.lv-photo-cell img:hover { opacity: 0.85; }
+.lv-photo-featured .lv-photo-img {
+  width: 162px;
+  height: 162px;
+}
+.lv-photo-img:hover { opacity: 0.85; }
+/* Roll overlay thumbnail (56px — used in confirm overlay) */
+.lv-roll-thumb {
+  width: 56px;
+  height: 56px;
+  object-fit: cover;
+  display: block;
+}
 
 .lv-photo-cell-empty {
   background: var(--lv-rule-faint);

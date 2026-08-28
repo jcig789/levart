@@ -113,26 +113,16 @@ function renderGallery(
 				: [...slot.photos];
 
 			// Grid columns: if featured, first column is 162px; otherwise uniform 80px
-			const sheet = group.createDiv({ cls: "lv-contact-sheet" });
-			if (featured) {
-				sheet.style.cssText = "display:grid;grid-template-columns:162px 80px 80px;grid-auto-rows:80px;gap:2px;";
-			} else {
-				sheet.style.cssText = "display:grid;grid-template-columns:80px 80px 80px;grid-auto-rows:80px;gap:2px;width:244px;";
-			}
+			const sheet = group.createDiv({
+				cls: `lv-contact-sheet${featured ? " lv-contact-sheet-featured" : ""}`,
+			});
 
 			ordered.forEach((filename, i) => {
 				const isFeatured = featured && i === 0;
-				const cell = sheet.createDiv({ cls: `lv-photo-cell${isFeatured ? " lv-photo-featured" : ""}` });
-				if (isFeatured) {
-					cell.style.cssText = "width:162px;height:162px;overflow:hidden;flex-shrink:0;grid-row:span 2;";
-				} else {
-					cell.style.cssText = "width:80px;height:80px;overflow:hidden;flex-shrink:0;";
-				}
-
-				const imgW = isFeatured ? "162" : "80";
-				const imgH = isFeatured ? "162" : "80";
-				const img = cell.createEl("img");
-				img.style.cssText = `width:${imgW}px;height:${imgH}px;object-fit:cover;display:block;`;
+				const cell = sheet.createDiv({
+					cls: `lv-photo-cell${isFeatured ? " lv-photo-featured" : ""}`,
+				});
+				const img = cell.createEl("img", { cls: "lv-photo-img" });
 				app.vault.adapter.readBinary(photoPath(tripsFolder, trip.id, filename))
 					.then(buf => {
 						const blob = new Blob([buf], { type: "image/jpeg" });
@@ -165,8 +155,7 @@ function renderGallery(
 				const remainder = slot.photos.length % 3;
 				if (remainder > 0) {
 					for (let c = 0; c < 3 - remainder; c++) {
-						const ghost = sheet.createDiv({ cls: "lv-photo-cell-ghost" });
-						ghost.style.cssText = "width:80px;height:80px;background:transparent;";
+						sheet.createDiv({ cls: "lv-photo-cell-ghost" });
 					}
 				}
 			}

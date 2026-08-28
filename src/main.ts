@@ -50,6 +50,6 @@ export default class LevartPlugin extends Plugin {
 			leaf = workspace.getLeaf(true);
 			await leaf.setViewState({ type: LEVART_VIEW_TYPE, active: true });
 		}
-		void workspace.revealLeaf(leaf);
+		await workspace.revealLeaf(leaf);
 	}
 }
