@@ -1,5 +1,5 @@
 import { App, setIcon } from "obsidian";
-import type { Trip, TripDay, TripSlot, SavedArrangement, SlotCategory } from "../types";
+import type { Trip, TripDay, TripSlot, SavedArrangement } from "../types";
 import { CATEGORY_COLORS } from "../utils";
 import { ExportDayModal } from "../modals/ExportDayModal";
 
@@ -99,14 +99,14 @@ export function renderProspect(
 		const maxSl = dayStrip.scrollWidth - dayStrip.clientWidth;
 		const showRight = maxSl > 2 && sl < maxSl - 2;
 		const showLeft  = sl > 2;
-		fadeLeft.style.display  = showLeft  ? "block" : "none";
-		fadeRight.style.display = showRight ? "block" : "none";
+		fadeLeft.toggleClass("is-hidden", !showLeft);
+		fadeRight.toggleClass("is-hidden", !showRight);
 	};
 	// Sync call once tabs exist in DOM, then again after layout flush
 	updateStripFade();
 	dayStrip.addEventListener("scroll", updateStripFade, { passive: true });
-	requestAnimationFrame(() => { requestAnimationFrame(updateStripFade); });
-	setTimeout(updateStripFade, 300);
+	window.requestAnimationFrame(() => { window.requestAnimationFrame(updateStripFade); });
+	window.setTimeout(updateStripFade, 300);
 	const fadeResizeObs = new ResizeObserver(updateStripFade);
 	fadeResizeObs.observe(dayStrip);
 
@@ -115,7 +115,7 @@ export function renderProspect(
 		if (!exportDayEl) return;
 		const activeDay = trip.days[activeDayIdx];
 		const hasStops = activeDay && activeDay.slots.filter(s => s.status !== "skipped").length > 0;
-		exportDayEl.style.display = hasStops ? "block" : "none";
+		exportDayEl.toggleClass("is-hidden", !hasStops);
 		exportDayEl.onclick = () => {
 			new ExportDayModal(app, trip, activeDay, activeDayIdx + 1, tripsFolder).open();
 		};
@@ -315,7 +315,7 @@ function renderGrid(
 	observer.observe(document.body, { childList: true, subtree: true });
 
 	// Smart scroll: first stop minus 1hr, floor at 07:00
-	setTimeout(() => {
+	window.setTimeout(() => {
 		const sorted = [...day.slots].sort((a, b) => a.startTime.localeCompare(b.startTime));
 		const firstHour = sorted.length > 0
 			? Math.max(7, parseInt(sorted[0].startTime.split(":")[0]) - 1)
@@ -464,7 +464,6 @@ function renderSlotBlock(
 	const leftPct   = layout.col * colWidth;
 	// Small gap between columns when more than one; right edge inset reduced proportionally
 	const rightInset = layout.total > 1 ? 2 : 16;
-	const leftInset  = layout.total > 1 ? layout.col * colWidth + "%" : "4px";
 
 	const block = col.createDiv({ cls: `lv-slot-block is-${slot.status}${slot.impromptu ? " is-impromptu" : ""}` });
 	if (layout.total > 1) {
@@ -663,7 +662,7 @@ function renderDetailContent(
 			const existing = savedArrangements.find(a => a.name === slot.title && a.category === (slot.category ?? ""));
 			if (existing) {
 				saveArrBtn.textContent = "Already saved";
-				setTimeout(() => { saveArrBtn.textContent = "Save as arrangement"; }, 1500);
+				window.setTimeout(() => { saveArrBtn.textContent = "Save as arrangement"; }, 1500);
 				return;
 			}
 			const newArr: SavedArrangement = {
@@ -674,7 +673,7 @@ function renderDetailContent(
 			const updated = [...savedArrangements, newArr];
 			onSaveArrangements(updated);
 			saveArrBtn.textContent = "Saved";
-			setTimeout(() => { saveArrBtn.textContent = "Save as arrangement"; }, 1500);
+			window.setTimeout(() => { saveArrBtn.textContent = "Save as arrangement"; }, 1500);
 		});
 	}
 

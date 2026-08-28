@@ -87,7 +87,7 @@ export class NewTripModal extends Modal {
 		cancelBtn.textContent = "Not yet";
 		cancelBtn.addEventListener("click", () => this.close());
 
-		setTimeout(() => nameInput.focus(), 50);
+		window.setTimeout(() => nameInput.focus(), 50);
 	}
 
 	onClose() {

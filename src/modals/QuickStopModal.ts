@@ -64,13 +64,12 @@ export class QuickStopModal extends Modal {
 		notesArea.rows = 2;
 		notesArea.addEventListener("input", () => {
 			notes = notesArea.value;
-			notesArea.style.height = "auto";
-			notesArea.style.height = `${notesArea.scrollHeight}px`;
+			notesArea.setCssStyles({ height: "auto" });
+			notesArea.setCssStyles({ height: notesArea.scrollHeight + "px" });
 		});
 
 		// Validation
-		const validationMsg = contentEl.createDiv({ cls: "lv-modal-validation" });
-		validationMsg.style.display = "none";
+		const validationMsg = contentEl.createDiv({ cls: "lv-modal-validation is-hidden" });
 
 		// Actions
 		const actions = contentEl.createDiv({ cls: "lv-modal-actions" });
@@ -80,7 +79,7 @@ export class QuickStopModal extends Modal {
 		saveBtn.addEventListener("click", () => {
 			if (!title.trim()) {
 				validationMsg.textContent = "A name for this stop is required.";
-				validationMsg.style.display = "block";
+				validationMsg.removeClass("is-hidden");
 				titleInput.focus();
 				return;
 			}
@@ -114,7 +113,7 @@ export class QuickStopModal extends Modal {
 		cancelBtn.textContent = "Cancel";
 		cancelBtn.addEventListener("click", () => this.close());
 
-		setTimeout(() => titleInput.focus(), 50);
+		window.setTimeout(() => titleInput.focus(), 50);
 	}
 
 	onClose() {

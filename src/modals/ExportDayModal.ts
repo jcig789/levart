@@ -53,14 +53,14 @@ export class ExportDayModal extends Modal {
 
 		const exportBtn = actions.createDiv({ cls: "lv-modal-action-primary" });
 		exportBtn.textContent = "Export";
-		exportBtn.addEventListener("click", async () => {
+		exportBtn.addEventListener("click", () => { void (async () => {
 			exportBtn.textContent = "Preparing…";
 			await exportDayCard(this.app, this.trip, this.day, this.tripsFolder, {
 				includeNotes,
 				includeBudget,
 			});
 			this.close();
-		});
+		})(); });
 
 		const cancelBtn = actions.createDiv({ cls: "lv-modal-action-cancel" });
 		cancelBtn.textContent = "Cancel";

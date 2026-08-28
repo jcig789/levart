@@ -1,4 +1,4 @@
-import { App, Vault, Notice } from "obsidian";
+import { App, Notice } from "obsidian";
 import type { Trip, TripSlot } from "../types";
 import { getTodayDate, photoPath, timestampFilename, extensionFromFile } from "../utils";
 // QuickStopModal removed — replaced by inline quick-capture bar
@@ -78,9 +78,9 @@ function showConfirmOverlay(
 	dismissBtn.addEventListener("click", () => overlay.remove());
 
 	// Confirm — save all files to vault, report failures without blocking successes
-	confirmBtn.addEventListener("click", async () => {
+	confirmBtn.addEventListener("click", () => { void (async () => {
 		confirmBtn.textContent = "Saving…";
-		confirmBtn.style.pointerEvents = "none";
+		confirmBtn.setCssStyles({ pointerEvents: "none" });
 		const failed: string[] = [];
 
 		// Stagger timestamps so filenames are unique even when saving multiple files at once
@@ -106,7 +106,7 @@ function showConfirmOverlay(
 		}
 		onSaved();
 		overlay.remove();
-	});
+	})(); });
 }
 
 export function renderPresent(
@@ -354,7 +354,7 @@ export function renderPresent(
 			addStopBtn.addEventListener("click", doRecord);
 		}
 
-		setTimeout(() => input.focus(), 30);
+		window.setTimeout(() => input.focus(), 30);
 	};
 
 	const restoreCaptureRow = () => {
@@ -389,7 +389,6 @@ export function renderPresent(
 	// Header
 	const seqHeader = seqZone.createDiv({ cls: "lv-passage-seq-header" });
 	seqHeader.createSpan({ cls: "lv-passage-seq-header-label", text: "today" });
-	const remaining = sorted.filter(s => s.status !== "done" && s.status !== "skipped").length;
 	seqHeader.createSpan({ cls: "lv-passage-seq-header-count", text: `${sorted.length} stop${sorted.length !== 1 ? "s" : ""}` });
 
 	// Rows
@@ -413,14 +412,14 @@ export function renderPresent(
 
 			// Long-press (mobile) or right-click (desktop) opens the delay picker
 			if (!isDone && !isSkipped) {
-				let holdTimer: ReturnType<typeof setTimeout> | null = null;
+				let holdTimer: number | null = null;
 				const startHold = (e: Event) => {
-					holdTimer = setTimeout(() => {
+					holdTimer = window.setTimeout(() => {
 						e.stopPropagation();
 						showDelayPicker(row, slot);
 					}, 400);
 				};
-				const cancelHold = () => { if (holdTimer) { clearTimeout(holdTimer); holdTimer = null; } };
+				const cancelHold = () => { if (holdTimer) { window.clearTimeout(holdTimer); holdTimer = null; } };
 				row.addEventListener("mousedown",   startHold);
 				row.addEventListener("touchstart",  startHold, { passive: true });
 				row.addEventListener("mouseup",     cancelHold);
@@ -474,7 +473,7 @@ export function renderPresent(
 							document.removeEventListener("mousedown", dismiss);
 						}
 					};
-					setTimeout(() => document.addEventListener("mousedown", dismiss), 0);
+					window.setTimeout(() => document.addEventListener("mousedown", dismiss), 0);
 				});
 			}
 
@@ -526,7 +525,7 @@ export function renderPresent(
 				});
 				// Done/skipped: suppress location
 				if (isDone || isSkipped) {
-					locCell.style.display = "none";
+					locCell.addClass("is-hidden");
 				} else if (!isCurrent) {
 					// Tap location to skip — show transient undo
 					locCell.addEventListener("click", (e) => {
@@ -554,7 +553,7 @@ export function renderPresent(
 		});
 
 		// Autoscroll — defer to allow layout flush
-		requestAnimationFrame(() => {
+		window.requestAnimationFrame(() => {
 			const currentRow = seqZone.querySelector(".lv-psg-seq-row.is-current") as HTMLElement;
 			if (currentRow) currentRow.scrollIntoView({ block: "nearest" });
 		});
@@ -637,9 +636,9 @@ export function renderPresent(
 			onUpdate(trip);
 			renderSeqRows();
 		});
-		setTimeout(() => {
+		window.setTimeout(() => {
 			undo.addClass("is-fading");
-			setTimeout(() => undo.remove(), 450);
+			window.setTimeout(() => undo.remove(), 450);
 		}, 5000);
 	};
 
@@ -655,9 +654,9 @@ export function renderPresent(
 			renderSeqRows();
 		});
 		// Fade and remove after 5s
-		setTimeout(() => {
+		window.setTimeout(() => {
 			undo.addClass("is-fading");
-			setTimeout(() => undo.remove(), 450);
+			window.setTimeout(() => undo.remove(), 450);
 		}, 5000);
 	};
 

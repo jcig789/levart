@@ -19,8 +19,7 @@ export function createCalendarPicker(
 
 	const wrap = container.createDiv({ cls: "lv-cal-wrap" });
 	const trigger = wrap.createDiv({ cls: "lv-cal-trigger" });
-	const calendarEl = wrap.createDiv({ cls: "lv-cal-inline" });
-	calendarEl.style.display = "none";
+	const calendarEl = wrap.createDiv({ cls: "lv-cal-inline is-hidden" });
 
 	updateTriggerText();
 
@@ -33,13 +32,13 @@ export function createCalendarPicker(
 		if (activeClose && activeClose !== close) activeClose();
 		isOpen = true;
 		activeClose = close;
-		calendarEl.style.display = "block";
+		calendarEl.removeClass("is-hidden");
 		renderCalendar();
 	}
 
 	function close() {
 		isOpen = false;
-		calendarEl.style.display = "none";
+		calendarEl.addClass("is-hidden");
 		if (activeClose === close) activeClose = null;
 	}
 

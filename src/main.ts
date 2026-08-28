@@ -17,8 +17,8 @@ export default class LevartPlugin extends Plugin {
 		});
 
 		this.addCommand({
-			id: "open-levart",
-			name: "Open Levart",
+			id: "open",
+			name: "Open",
 			callback: () => { void this.openView(); },
 		});
 
@@ -50,6 +50,6 @@ export default class LevartPlugin extends Plugin {
 			leaf = workspace.getLeaf(true);
 			await leaf.setViewState({ type: LEVART_VIEW_TYPE, active: true });
 		}
-		workspace.revealLeaf(leaf);
+		void workspace.revealLeaf(leaf);
 	}
 }

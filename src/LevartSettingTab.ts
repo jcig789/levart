@@ -41,11 +41,8 @@ export class LevartSettingTab extends PluginSettingTab {
 			);
 
 		// ── Journal frontmatter ───────────────────────────────────────────────
-		containerEl.createEl("h3", { text: "Journal frontmatter" });
-		containerEl.createEl("p", {
-			text: "Choose which fields appear in the YAML frontmatter when you export a journal or scaffold.",
-			cls: "setting-item-description",
-		});
+		new Setting(containerEl).setHeading().setName("Journal frontmatter");
+		new Setting(containerEl).setDesc("Choose which fields appear in the YAML frontmatter when you export a journal or scaffold.");
 
 		// Ensure settings has all default fields (migration safety)
 		const knownKeys = DEFAULT_FRONTMATTER_FIELDS.map(f => f.key);
@@ -70,11 +67,8 @@ export class LevartSettingTab extends PluginSettingTab {
 		});
 
 		// ── Custom frontmatter fields ─────────────────────────────────────────
-		containerEl.createEl("h4", { text: "Custom fields", cls: "lv-settings-subhead" });
-		containerEl.createEl("p", {
-			text: "Additional key-value pairs added to every journal export. Values are written as strings.",
-			cls: "setting-item-description",
-		});
+		new Setting(containerEl).setHeading().setName("Custom fields");
+		new Setting(containerEl).setDesc("Additional key-value pairs added to every journal export. Values are written as strings.");
 
 		const customList = containerEl.createDiv({ cls: "lv-settings-custom-list" });
 
@@ -88,9 +82,9 @@ export class LevartSettingTab extends PluginSettingTab {
 					attr: { type: "text", placeholder: "field_name" },
 				});
 				keyInput.value = entry.key;
-				keyInput.addEventListener("blur", async () => {
+				keyInput.addEventListener("blur", () => {
 					entry.key = keyInput.value.trim();
-					await this.plugin.saveSettings();
+					void this.plugin.saveSettings();
 				});
 
 				row.createSpan({ cls: "lv-settings-custom-sep", text: ":" });
@@ -100,15 +94,15 @@ export class LevartSettingTab extends PluginSettingTab {
 					attr: { type: "text", placeholder: "value" },
 				});
 				valInput.value = entry.value;
-				valInput.addEventListener("blur", async () => {
+				valInput.addEventListener("blur", () => {
 					entry.value = valInput.value.trim();
-					await this.plugin.saveSettings();
+					void this.plugin.saveSettings();
 				});
 
 				const removeBtn = row.createSpan({ cls: "lv-settings-custom-remove", text: "×" });
-				removeBtn.addEventListener("click", async () => {
+				removeBtn.addEventListener("click", () => {
 					this.plugin.settings.customFrontmatter.splice(i, 1);
-					await this.plugin.saveSettings();
+					void this.plugin.saveSettings();
 					renderCustomList();
 				});
 			});
@@ -116,9 +110,9 @@ export class LevartSettingTab extends PluginSettingTab {
 			// Add field affordance
 			const addRow = customList.createDiv({ cls: "lv-settings-custom-add" });
 			addRow.textContent = "Add field";
-			addRow.addEventListener("click", async () => {
+			addRow.addEventListener("click", () => {
 				this.plugin.settings.customFrontmatter.push({ key: "", value: "" });
-				await this.plugin.saveSettings();
+				void this.plugin.saveSettings();
 				renderCustomList();
 				// Focus the new key input
 				const inputs = customList.querySelectorAll<HTMLInputElement>(".lv-settings-custom-key");

@@ -1,4 +1,4 @@
-import { App, Modal, Notice } from "obsidian";
+import { App, Modal } from "obsidian";
 import type { TripSlot, SlotCategory, SavedArrangement } from "../types";
 
 const CATEGORIES: { key: SlotCategory | ""; label: string }[] = [
@@ -171,8 +171,8 @@ export class NewSlotModal extends Modal {
 		notesArea.rows = 3;
 		notesArea.addEventListener("input", () => {
 			notes = notesArea.value;
-			notesArea.style.height = "auto";
-			notesArea.style.height = `${notesArea.scrollHeight}px`;
+			notesArea.setCssStyles({ height: "auto" });
+			notesArea.setCssStyles({ height: notesArea.scrollHeight + "px" });
 		});
 
 		// Estimate
@@ -195,7 +195,6 @@ export class NewSlotModal extends Modal {
 
 		// Per-stop currency override — toggles to an inline input
 		const currencyOverrideWrap = estimateField.createDiv({ cls: "lv-budget-currency-override" });
-		let currencyEditMode = false;
 
 		const showCurrencyLink = () => {
 			currencyOverrideWrap.empty();
@@ -221,24 +220,23 @@ export class NewSlotModal extends Modal {
 				// Refresh symbol in estimate row
 				const sym = estimateRow.querySelector(".lv-budget-symbol") as HTMLElement | null;
 				const newSym = slotCurrency || this.tripCurrency;
-				if (sym) { sym.textContent = newSym; sym.style.display = newSym ? "" : "none"; }
+				if (sym) { sym.textContent = newSym; sym.toggleClass("is-hidden", !newSym); }
 				showCurrencyLink();
 			});
-			setTimeout(() => input.focus(), 30);
+			window.setTimeout(() => input.focus(), 30);
 		};
 
 		showCurrencyLink();
 
 		// Inline validation message
-		const validationMsg = contentEl.createDiv({ cls: "lv-modal-validation" });
-		validationMsg.style.display = "none";
+		const validationMsg = contentEl.createDiv({ cls: "lv-modal-validation is-hidden" });
 
 		const showError = (msg: string) => {
 			validationMsg.textContent = msg;
-			validationMsg.style.display = "block";
+			validationMsg.removeClass("is-hidden");
 		};
 		const clearError = () => {
-			validationMsg.style.display = "none";
+			validationMsg.addClass("is-hidden");
 		};
 
 		// Re-validate when times change (only for manual inputs)
@@ -340,7 +338,7 @@ export class NewSlotModal extends Modal {
 		cancelBtn.addEventListener("click", () => this.close());
 
 		// Focus first input
-		setTimeout(() => activityInput.focus(), 50);
+		window.setTimeout(() => activityInput.focus(), 50);
 	}
 
 	onClose() {

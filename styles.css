@@ -1,5 +1,7 @@
 /* ── Levart — Private Travel Journal ── */
 
+.is-hidden { display: none; }
+
 .levart-root * { box-sizing: border-box; }
 
 .levart-root button {
@@ -270,7 +272,7 @@
   overflow: hidden;
 }
 /* In edit mode, expand naturally to show all fields */
-.lv-trip-header:has(.lv-header-edit-form) {
+.lv-trip-header.is-editing {
   height: auto;
   min-height: var(--lv-header-h);
   overflow: visible;
@@ -1016,7 +1018,7 @@
 }
 .lv-timeline-strip .lv-entry-time  { font-size: 9px; }
 .lv-timeline-strip .lv-entry-title { font-size: 11px; line-height: 1.25; }
-.lv-timeline-strip .lv-entry-line2 { display: none !important; }
+.lv-timeline-strip .lv-slot-block .lv-entry-line2 { display: none; }
 
 /* ─── RIGHT: detail panel ───────────── */
 .lv-detail-panel {

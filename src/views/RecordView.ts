@@ -18,7 +18,6 @@ export function renderRecord(
 	el.empty();
 	el.addClass("lv-chronicle");
 
-	let activeTab: ChronicleTab = "gallery";
 	// Prompt opt-in — persists for the session, resets to off on reload (by design)
 	let showPrompts = false;
 
@@ -27,26 +26,22 @@ export function renderRecord(
 	const content = el.createDiv({ cls: "lv-chronicle-content" });
 
 	const renderTab = (tab: ChronicleTab) => {
-		activeTab = tab;
 		subnav.querySelectorAll(".lv-subnav-btn").forEach((b, i) => {
 			b.toggleClass("is-active", (i === 0 && tab === "gallery") || (i === 1 && tab === "compose"));
 		});
-		promptToggle.style.display = tab === "compose" ? "block" : "none";
+		promptToggle.toggleClass("is-hidden", tab !== "compose");
 		if (tab === "gallery") renderGallery(content, app, trip, tripsFolder, onUpdate);
 		else renderCompose(content, app, trip, tripsFolder, showPrompts, onUpdate, frontmatterFields, customFrontmatter);
 	};
 
 	const galleryBtn = subnav.createDiv({ cls: "lv-subnav-btn is-active" });
 	galleryBtn.textContent = "Gallery";
-	galleryBtn.style.cursor = "pointer";
 	const composeBtn = subnav.createDiv({ cls: "lv-subnav-btn" });
 	composeBtn.textContent = "Compose";
-	composeBtn.style.cursor = "pointer";
 
 	// Prompt toggle — right-aligned in subnav, only visible in Compose
 	subnav.createSpan({ cls: "lv-subnav-spacer" });
-	const promptToggle = subnav.createDiv({ cls: "lv-subnav-prompt-toggle", text: "Prompts" });
-	promptToggle.style.display = "none";
+	const promptToggle = subnav.createDiv({ cls: "lv-subnav-prompt-toggle is-hidden", text: "Prompts" });
 	promptToggle.addEventListener("click", () => {
 		showPrompts = !showPrompts;
 		promptToggle.toggleClass("is-active", showPrompts);
@@ -147,15 +142,15 @@ function renderGallery(
 
 				// Long-press to designate/un-designate as featured
 				if (onUpdate) {
-					let holdTimer: ReturnType<typeof setTimeout> | null = null;
+					let holdTimer: number | null = null;
 					const startHold = () => {
-						holdTimer = setTimeout(() => {
+						holdTimer = window.setTimeout(() => {
 							slot.featuredPhoto = isFeatured ? undefined : filename;
 							onUpdate(trip);
 							renderGallery(el, app, trip, tripsFolder, onUpdate);
 						}, 400);
 					};
-					const cancelHold = () => { if (holdTimer) { clearTimeout(holdTimer); holdTimer = null; } };
+					const cancelHold = () => { if (holdTimer) { window.clearTimeout(holdTimer); holdTimer = null; } };
 					cell.addEventListener("mousedown",   startHold);
 					cell.addEventListener("touchstart",  startHold, { passive: true });
 					cell.addEventListener("mouseup",     cancelHold);
@@ -290,8 +285,8 @@ function renderCompose(
 				if (onUpdate) onUpdate(trip);
 			});
 			textarea.addEventListener("input", () => {
-				textarea.style.height = "auto";
-				textarea.style.height = `${textarea.scrollHeight}px`;
+				textarea.setCssStyles({ height: "auto" });
+				textarea.setCssStyles({ height: textarea.scrollHeight + "px" });
 			});
 		});
 	});
@@ -468,14 +463,14 @@ async function generateScaffold(
 
 	const scaffoldPath = normalizePath(`${tripFolderPath(tripsFolder, trip.id)}/journal.md`);
 	try {
-		const existing = app.vault.getFileByPath(scaffoldPath);
-		if (existing) {
-			await app.vault.modify(existing as TFile, lines.join("\n"));
+		const existing = app.vault.getAbstractFileByPath(scaffoldPath);
+		if (existing instanceof TFile) {
+			await app.vault.modify(existing, lines.join("\n"));
 		} else {
 			await app.vault.create(scaffoldPath, lines.join("\n"));
 		}
-		const file = app.vault.getFileByPath(scaffoldPath);
-		if (file) await app.workspace.getLeaf(true).openFile(file as TFile);
+		const file = app.vault.getAbstractFileByPath(scaffoldPath);
+		if (file instanceof TFile) await app.workspace.getLeaf(true).openFile(file);
 		new Notice("Journal written.");
 	} catch {
 		new Notice("Could not write the journal.");
@@ -583,14 +578,14 @@ async function generateFolio(
 
 	const folioPath = normalizePath(`${tripFolderPath(tripsFolder, trip.id)}/folio.md`);
 	try {
-		const existing = app.vault.getFileByPath(folioPath);
-		if (existing) {
-			await app.vault.modify(existing as TFile, lines.join("\n"));
+		const existing = app.vault.getAbstractFileByPath(folioPath);
+		if (existing instanceof TFile) {
+			await app.vault.modify(existing, lines.join("\n"));
 		} else {
 			await app.vault.create(folioPath, lines.join("\n"));
 		}
-		const file = app.vault.getFileByPath(folioPath);
-		if (file) await app.workspace.getLeaf(true).openFile(file as TFile);
+		const file = app.vault.getAbstractFileByPath(folioPath);
+		if (file instanceof TFile) await app.workspace.getLeaf(true).openFile(file);
 		new Notice("Journal written.");
 	} catch {
 		new Notice("Could not write the journal.");

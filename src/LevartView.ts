@@ -139,11 +139,13 @@ export class LevartView extends ItemView {
 				removeBtn.textContent = "Remove";
 				removeBtn.addEventListener("click", (e) => {
 					e.stopPropagation();
-					new DeleteTripModal(this.app, trip.name, async () => {
-						await deleteTrip(this.app.vault, this.plugin.settings.tripsFolder, trip.id);
-						if (this.activeTrip?.id === trip.id) this.activeTrip = null;
-						await this.loadTrips();
-						this.render();
+					new DeleteTripModal(this.app, trip.name, () => {
+						void (async () => {
+							await deleteTrip(this.app, this.plugin.settings.tripsFolder, trip.id);
+							if (this.activeTrip?.id === trip.id) this.activeTrip = null;
+							await this.loadTrips();
+							this.render();
+						})();
 					}).open();
 				});
 
@@ -170,11 +172,13 @@ export class LevartView extends ItemView {
 		const newJourney = sidebar.createDiv({ cls: "lv-sidebar-new-journey" });
 		newJourney.textContent = "New journey";
 		newJourney.addEventListener("click", () => {
-			new NewTripModal(this.app, async (trip) => {
-				await saveTrip(this.app.vault, this.plugin.settings.tripsFolder, trip);
-				this.activeTrip = trip;
-				await this.loadTrips();
-				this.render();
+			new NewTripModal(this.app, (trip) => {
+				void (async () => {
+					await saveTrip(this.app.vault, this.plugin.settings.tripsFolder, trip);
+					this.activeTrip = trip;
+					await this.loadTrips();
+					this.render();
+				})();
 			}).open();
 		});
 
@@ -198,11 +202,13 @@ export class LevartView extends ItemView {
 		const compactNew = compactSel.createDiv({ cls: "lv-compact-new-btn" });
 		compactNew.textContent = "New journey";
 		compactNew.addEventListener("click", () => {
-			new NewTripModal(this.app, async (trip) => {
-				await saveTrip(this.app.vault, this.plugin.settings.tripsFolder, trip);
-				this.activeTrip = trip;
-				await this.loadTrips();
-				this.render();
+			new NewTripModal(this.app, (trip) => {
+				void (async () => {
+					await saveTrip(this.app.vault, this.plugin.settings.tripsFolder, trip);
+					this.activeTrip = trip;
+					await this.loadTrips();
+					this.render();
+				})();
 			}).open();
 		});
 
@@ -222,6 +228,7 @@ export class LevartView extends ItemView {
 		const tripHeader = main.createDiv({ cls: "lv-trip-header" });
 		const renderTripHeader = (editing = false) => {
 			tripHeader.empty();
+			tripHeader.toggleClass("is-editing", editing);
 			if (editing) {
 				// Inline edit form
 				const editForm = tripHeader.createDiv({ cls: "lv-header-edit-form" });
@@ -239,17 +246,16 @@ export class LevartView extends ItemView {
 				const confirmBtn = editActions.createSpan({ cls: "lv-header-edit-confirm", text: "Confirm" });
 				const cancelBtn  = editActions.createSpan({ cls: "lv-header-edit-cancel", text: "Cancel" });
 
-				confirmBtn.addEventListener("click", async () => {
+				confirmBtn.addEventListener("click", () => {
 					const name = nameInput.value.trim();
 					if (!name) { nameInput.focus(); return; }
 					this.activeTrip!.name        = name;
 					this.activeTrip!.destination  = destInput.value.trim();
 					this.activeTrip!.currency     = currencyInput.value.trim();
-					await saveTrip(this.app.vault, this.plugin.settings.tripsFolder, this.activeTrip!);
-					this.render();
+					void saveTrip(this.app.vault, this.plugin.settings.tripsFolder, this.activeTrip!).then(() => this.render());
 				});
 				cancelBtn.addEventListener("click", () => renderTripHeader(false));
-				setTimeout(() => nameInput.focus(), 30);
+				window.setTimeout(() => nameInput.focus(), 30);
 			} else {
 				// Display mode
 				tripHeader.createDiv({ cls: "lv-header-destination", text: this.activeTrip!.destination || "Journey" });
@@ -292,7 +298,6 @@ export class LevartView extends ItemView {
 			const iconEl = btn.createSpan({ cls: "lv-phase-btn-icon" });
 			setIcon(iconEl, p.icon);
 			btn.setAttribute("aria-label", p.full);
-			btn.style.cursor = "pointer";
 			btn.addEventListener("click", () => {
 				this.activePhase = p.key;
 				this.render();
@@ -308,20 +313,18 @@ export class LevartView extends ItemView {
 			const modeToggle = phaseNav.createDiv({ cls: "lv-mode-toggle" });
 			const gridBtn = modeToggle.createDiv({ cls: `lv-mode-btn${currentMode === "grid" ? " is-active" : ""}`, text: "Grid" });
 			const seqBtn  = modeToggle.createDiv({ cls: `lv-mode-btn${currentMode === "sequence" ? " is-active" : ""}`, text: "Sequence" });
-			gridBtn.addEventListener("click", async () => {
+			gridBtn.addEventListener("click", () => {
 				if (currentMode !== "grid") {
 					if (!this.plugin.settings.prospectModes) this.plugin.settings.prospectModes = {};
 					this.plugin.settings.prospectModes[tripId] = "grid";
-					await this.plugin.saveSettings();
-					this.render();
+					void this.plugin.saveSettings().then(() => this.render());
 				}
 			});
-			seqBtn.addEventListener("click", async () => {
+			seqBtn.addEventListener("click", () => {
 				if (currentMode !== "sequence") {
 					if (!this.plugin.settings.prospectModes) this.plugin.settings.prospectModes = {};
 					this.plugin.settings.prospectModes[tripId] = "sequence";
-					await this.plugin.saveSettings();
-					this.render();
+					void this.plugin.saveSettings().then(() => this.render());
 				}
 			});
 			// Divider + Export day (icon)
@@ -329,7 +332,7 @@ export class LevartView extends ItemView {
 			exportDayEl = modeToggle.createDiv({ cls: "lv-mode-btn lv-mode-export" });
 			exportDayEl.setAttribute("aria-label", "Export day");
 			setIcon(exportDayEl, "share");
-			exportDayEl.style.display = "none";
+			exportDayEl.addClass("is-hidden");
 		}
 
 		// Content area

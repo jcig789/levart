@@ -1,4 +1,4 @@
-import { App, Notice } from "obsidian";
+import { App, Notice, TFile } from "obsidian";
 import { normalizePath } from "obsidian";
 import type { Trip, TripDay, TripSlot } from "../types";
 import { tripFolderPath } from "../utils";
@@ -11,13 +11,6 @@ const CATEGORY_COLORS: Record<string, string> = {
 	activity: "#A89B5A",
 };
 
-const CATEGORY_LABELS: Record<string, string> = {
-	food:     "Dining",
-	sight:    "Sightseeing",
-	transit:  "Transit",
-	stay:     "Lodging",
-	activity: "Activity",
-};
 
 export interface DayCardOptions {
 	includeNotes: boolean;
@@ -351,13 +344,13 @@ export async function exportDayCard(
 	const html = buildHTML(trip, day, opts);
 
 	// Use Vault API (not adapter) so Obsidian's file index stays in sync on mobile
-	const existingFile = app.vault.getFileByPath(filePath);
-	if (existingFile) {
-		await app.vault.modify(existingFile as any, html);
+	const existingFile = app.vault.getAbstractFileByPath(filePath);
+	const isUpdate = existingFile instanceof TFile;
+	if (isUpdate) {
+		await app.vault.modify(existingFile, html);
 	} else {
 		await app.vault.create(filePath, html);
 	}
-	const isUpdate = !!existingFile;
 
 	// FRAGILE: openWithDefaultApp is an undocumented internal Obsidian API.
 	// It works across all current platforms but could break without notice on Obsidian updates.
