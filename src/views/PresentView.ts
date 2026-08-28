@@ -1,6 +1,6 @@
 import { App, Notice } from "obsidian";
 import type { Trip, TripSlot } from "../types";
-import { getTodayDate, photoPath, timestampFilename, extensionFromFile } from "../utils";
+import { getTodayDate, photoPath, timestampFilename, extensionFromFile, randomId } from "../utils";
 // QuickStopModal removed — replaced by inline quick-capture bar
 
 // ── Camera roll overlay ──────────────────────────────────────────────────────
@@ -309,7 +309,7 @@ export function renderPresent(
 				const endMins   = Math.min(startMins + 30, 23 * 60 + 59);
 				const endTime   = `${String(Math.floor(endMins / 60)).padStart(2, "0")}:${String(endMins % 60).padStart(2, "0")}`;
 				const slot = {
-					id: crypto.randomUUID(),
+					id: randomId(),
 					title: text,
 					location: "",
 					startTime,
@@ -319,7 +319,7 @@ export function renderPresent(
 					estimate: 0, actual: 0,
 					status: "planned" as const,
 					photos: [],
-					coords: null as null,
+					coords: null,
 					category: undefined,
 					impromptu: true,
 				};

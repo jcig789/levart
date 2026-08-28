@@ -1,5 +1,6 @@
 import { App, Modal } from "obsidian";
 import type { TripSlot, SlotCategory, SavedArrangement } from "../types";
+import { randomId } from "../utils";
 
 const CATEGORIES: { key: SlotCategory | ""; label: string }[] = [
 	{ key: "",          label: "—" },
@@ -218,7 +219,7 @@ export class NewSlotModal extends Modal {
 				const val = input.value.trim();
 				slotCurrency = val === this.tripCurrency ? "" : val;
 				// Refresh symbol in estimate row
-				const sym = estimateRow.querySelector(".lv-budget-symbol") as HTMLElement | null;
+				const sym = estimateRow.querySelector<HTMLElement>(".lv-budget-symbol");
 				const newSym = slotCurrency || this.tripCurrency;
 				if (sym) { sym.textContent = newSym; sym.toggleClass("is-hidden", !newSym); }
 				showCurrencyLink();
@@ -313,7 +314,7 @@ export class NewSlotModal extends Modal {
 			}
 
 			const slot: TripSlot = {
-				id: e?.id ?? crypto.randomUUID(),
+				id: e?.id ?? randomId(),
 				title: title_val.trim(),
 				location: location.trim(),
 				startTime,

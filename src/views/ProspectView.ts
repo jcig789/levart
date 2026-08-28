@@ -1,6 +1,6 @@
 import { App, setIcon } from "obsidian";
 import type { Trip, TripDay, TripSlot, SavedArrangement } from "../types";
-import { CATEGORY_COLORS } from "../utils";
+import { CATEGORY_COLORS, randomId } from "../utils";
 import { ExportDayModal } from "../modals/ExportDayModal";
 
 const CATEGORY_ICONS: Record<string, string> = {
@@ -666,7 +666,7 @@ function renderDetailContent(
 				return;
 			}
 			const newArr: SavedArrangement = {
-				id: crypto.randomUUID(),
+				id: randomId(),
 				name: slot.title,
 				category: slot.category ?? "",
 			};

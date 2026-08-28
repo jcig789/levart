@@ -4,6 +4,11 @@ import type { SlotCategory } from "./types";
 
 export const HOUR_HEIGHT = 64;
 
+// Safe UUID — avoids TypeScript unsafe-call on randomId()
+export function randomId(): string {
+	return (globalThis.crypto as { randomUUID: () => string }).randomUUID();
+}
+
 export function slugify(str: string): string {
 	return str
 		.toLowerCase()
@@ -101,7 +106,7 @@ export function timestampFilename(prefix: string, ext = "jpg"): string {
 export function migrateTripSlot(raw: Record<string, unknown>): TripSlot {
 	const rawBudget = (raw.budget as number | undefined);
 	return {
-		id: (raw.id as string | undefined) ?? crypto.randomUUID(),
+		id: (raw.id as string | undefined) ?? randomId(),
 		startTime: (raw.startTime as string | undefined) ?? "09:00",
 		endTime: (raw.endTime as string | undefined) ?? "10:00",
 		title: (raw.title as string | undefined) ?? "Untitled stop",
@@ -126,7 +131,7 @@ export const CURRENT_SCHEMA_VERSION = 2;
 
 export function migrateTrip(raw: Record<string, unknown>): Trip {
 	return {
-		id: (raw.id as string | undefined) ?? crypto.randomUUID(),
+		id: (raw.id as string | undefined) ?? randomId(),
 		name: (raw.name as string | undefined) ?? "Untitled trip",
 		destination: (raw.destination as string | undefined) ?? "",
 		startDate: (raw.startDate as string | undefined) ?? "",

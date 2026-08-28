@@ -1,6 +1,6 @@
 import { App, Modal } from "obsidian";
 import type { TripSlot, SlotCategory } from "../types";
-import { getCurrentTime } from "../utils";
+import { getCurrentTime, randomId } from "../utils";
 
 const CATEGORIES: { key: SlotCategory | ""; label: string }[] = [
 	{ key: "",          label: "—" },
@@ -90,7 +90,7 @@ export class QuickStopModal extends Modal {
 			const endTime = `${String(Math.floor(endMins / 60)).padStart(2, "0")}:${String(endMins % 60).padStart(2, "0")}`;
 
 			const slot: TripSlot = {
-				id: crypto.randomUUID(),
+				id: randomId(),
 				title: title.trim(),
 				location: "",
 				startTime: now,

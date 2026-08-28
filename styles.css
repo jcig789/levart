@@ -5,19 +5,6 @@
 .levart-root * { box-sizing: border-box; }
 
 .levart-root button {
-  background: none;
-  border: none;
-  padding: 0;
-  margin: 0;
-  font: inherit;
-  color: inherit;
-  cursor: pointer;
-  outline: none;
-  box-shadow: none;
-  border-radius: 0;
-  appearance: none;
-  -webkit-appearance: none;
-  box-sizing: border-box;
 }
 
 .levart-root textarea {
@@ -241,19 +228,6 @@
 }
 .levart-root.is-narrow .lv-trip-select-compact { display: flex; }
 .lv-trip-select-compact select {
-  background: none;
-  border: none;
-  padding: 0;
-  margin: 0;
-  font: inherit;
-  color: inherit;
-  cursor: pointer;
-  outline: none;
-  box-shadow: none;
-  border-radius: 0;
-  appearance: none;
-  -webkit-appearance: none;
-  box-sizing: border-box;
   font-family: var(--lv-body);
   font-size: 13px;
   background: var(--lv-bg);
@@ -261,6 +235,11 @@
   padding: 4px 8px;
   color: var(--lv-text-1);
   flex: 1;
+  box-sizing: border-box;
+  border-radius: 0;
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
 }
 
 .lv-compact-new-btn {
@@ -399,19 +378,6 @@
   width: 100%;
 }
 .lv-header-edit-input {
-  background: none;
-  border: none;
-  padding: 0;
-  margin: 0;
-  font: inherit;
-  color: inherit;
-  cursor: text;
-  outline: none;
-  box-shadow: none;
-  border-radius: 0;
-  appearance: none;
-  -webkit-appearance: none;
-  box-sizing: border-box;
   font-family: var(--lv-serif);
   color: var(--lv-text-1);
   border-bottom: 1px solid var(--lv-rule);
@@ -926,19 +892,6 @@
 .lv-seq-time-editable:hover { color: var(--lv-gold); }
 
 .lv-seq-time-input {
-  background: none;
-  border: none;
-  padding: 0;
-  margin: 0;
-  font: inherit;
-  color: inherit;
-  cursor: text;
-  outline: none;
-  box-shadow: none;
-  border-radius: 0;
-  appearance: none;
-  -webkit-appearance: none;
-  box-sizing: border-box;
   font-family: var(--lv-mono);
   font-size: 10px;
   color: var(--lv-gold);
@@ -2048,19 +2001,6 @@
   width: 100%;
 }
 .lv-quick-capture-input {
-  background: none;
-  border: none;
-  padding: 0;
-  margin: 0;
-  font: inherit;
-  color: inherit;
-  cursor: text;
-  outline: none;
-  box-shadow: none;
-  border-radius: 0;
-  appearance: none;
-  -webkit-appearance: none;
-  box-sizing: border-box;
   flex: 1;
   font-family: var(--lv-serif);
   font-size: 15px;
@@ -3640,19 +3580,6 @@
 }
 .lv-compose-ledger-row.is-blank .lv-compose-ledger-value { opacity: 0.5; }
 .lv-compose-actual-input {
-  background: none;
-  border: none;
-  padding: 0;
-  margin: 0;
-  font: inherit;
-  color: inherit;
-  cursor: text;
-  outline: none;
-  box-shadow: none;
-  border-radius: 0;
-  appearance: none;
-  -webkit-appearance: none;
-  box-sizing: border-box;
   font-family: var(--lv-mono);
   font-size: 13px;
   color: var(--lv-text-2);
