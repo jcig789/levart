@@ -1,0 +1,131 @@
+/*
+  levart-publish.css
+  ──────────────────
+  Paste the contents of this file into the "Custom CSS" field in your
+  Obsidian Publish site settings (publish.obsidian.md → Site options → Custom CSS).
+
+  This restores the Levart aesthetic — Palatino, cream ground, gold rules —
+  on your public Publish site. Apply once and forget.
+
+  If you publish other notes alongside your Levart folios, the italic rule
+  (converting all italic text to monospace gold) may affect those pages.
+  Scope it to folio pages by removing or adjusting the `em` block below.
+*/
+
+/* ── Ground ─────────────────────────────────────────────────────────────── */
+body {
+  background: #F7F4EE;
+  color: #18160F;
+}
+
+/* ── Prose container ─────────────────────────────────────────────────────── */
+.markdown-preview-view,
+.publish-article {
+  font-family: "Palatino Linotype", "Palatino", "Book Antiqua", Georgia, serif;
+  font-size: 17px;
+  line-height: 1.85;
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 64px 32px;
+}
+
+/* ── Trip name (H1) ──────────────────────────────────────────────────────── */
+.markdown-preview-view h1 {
+  font-family: "Palatino Linotype", "Palatino", "Book Antiqua", Georgia, serif;
+  font-size: 36px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: #18160F;
+  margin-bottom: 0.25em;
+  border: none;
+}
+
+/* ── Day heading (H2) ────────────────────────────────────────────────────── */
+.markdown-preview-view h2 {
+  font-family: "Palatino Linotype", "Palatino", "Book Antiqua", Georgia, serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #5A5248;
+  margin-top: 3.5em;
+  margin-bottom: 0;
+  border: none;
+}
+
+/* ── Date subheading (H3) ────────────────────────────────────────────────── */
+.markdown-preview-view h3 {
+  font-family: "Courier New", "Courier", monospace;
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  color: #A09890;
+  margin-top: 0.25em;
+  margin-bottom: 1.5em;
+  border: none;
+}
+
+/* ── Stop title (H4) ─────────────────────────────────────────────────────── */
+.markdown-preview-view h4 {
+  font-family: "Palatino Linotype", "Palatino", "Book Antiqua", Georgia, serif;
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: #18160F;
+  margin-top: 2em;
+  margin-bottom: 0.15em;
+  border: none;
+}
+
+/* ── Metadata lines — italic em used for *time · location* lines ─────────── */
+.markdown-preview-view em {
+  font-family: "Courier New", "Courier", monospace;
+  font-size: 11px;
+  font-style: normal;
+  letter-spacing: 0.06em;
+  color: #9A7B3C;
+}
+
+/* ── Body prose ──────────────────────────────────────────────────────────── */
+.markdown-preview-view p {
+  color: #2E2B24;
+  margin: 0.5em 0 1.2em;
+}
+
+/* ── Gold horizontal rules ───────────────────────────────────────────────── */
+.markdown-preview-view hr {
+  border: none;
+  border-top: 1px solid #9A7B3C;
+  margin: 2.5em 0;
+  opacity: 0.45;
+}
+
+/* ── Photos — full width, no rounding ───────────────────────────────────── */
+.markdown-preview-view img {
+  max-width: 100%;
+  display: block;
+  margin: 1.2em 0;
+  border-radius: 0;
+}
+
+/* ── Colophon — last italic paragraph ("Private record. Composed with Levart.") ── */
+.markdown-preview-view p:last-of-type em {
+  font-family: "Palatino Linotype", "Palatino", "Book Antiqua", Georgia, serif;
+  font-style: italic;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: #A09890;
+}
+
+/* ── Optional: hide Obsidian Publish site navigation ────────────────────── */
+/*
+  Uncomment the lines below to strip the Publish sidebar and header,
+  making the folio feel like a standalone document rather than a page
+  within a site. Recommended if you are sharing individual folio links
+  directly rather than publishing a browsable travel archive.
+
+.publish-sidebar,
+.site-header {
+  display: none;
+}
+*/
