@@ -5,10 +5,19 @@
 .levart-root * { box-sizing: border-box; }
 
 .levart-root button {
-  all: unset;
-  box-sizing: border-box;
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  color: inherit;
   cursor: pointer;
-  font-family: inherit;
+  outline: none;
+  box-shadow: none;
+  border-radius: 0;
+  appearance: none;
+  -webkit-appearance: none;
+  box-sizing: border-box;
 }
 
 .levart-root textarea {
@@ -232,7 +241,18 @@
 }
 .levart-root.is-narrow .lv-trip-select-compact { display: flex; }
 .lv-trip-select-compact select {
-  all: unset;
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  outline: none;
+  box-shadow: none;
+  border-radius: 0;
+  appearance: none;
+  -webkit-appearance: none;
   box-sizing: border-box;
   font-family: var(--lv-body);
   font-size: 13px;
@@ -379,7 +399,18 @@
   width: 100%;
 }
 .lv-header-edit-input {
-  all: unset;
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  cursor: text;
+  outline: none;
+  box-shadow: none;
+  border-radius: 0;
+  appearance: none;
+  -webkit-appearance: none;
   box-sizing: border-box;
   font-family: var(--lv-serif);
   color: var(--lv-text-1);
@@ -895,7 +926,18 @@
 .lv-seq-time-editable:hover { color: var(--lv-gold); }
 
 .lv-seq-time-input {
-  all: unset;
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  cursor: text;
+  outline: none;
+  box-shadow: none;
+  border-radius: 0;
+  appearance: none;
+  -webkit-appearance: none;
   box-sizing: border-box;
   font-family: var(--lv-mono);
   font-size: 10px;
@@ -907,7 +949,6 @@
   display: block;
   margin-bottom: 2px;
   background: transparent;
-  -webkit-appearance: none;
   appearance: none;
 }
 .lv-seq-time-input:focus { outline: none; }
@@ -1902,9 +1943,7 @@
 /* Done state */
 .lv-psg-seq-row.is-done .lv-psg-seq-title {
   color: var(--lv-text-3);
-  text-decoration: line-through;
-  text-decoration-color: var(--lv-rule);
-  text-decoration-thickness: 1px;
+  text-decoration: line-through var(--lv-rule);
 }
 .lv-psg-seq-row.is-done .lv-psg-seq-time { color: var(--lv-text-3); opacity: 0.5; }
 
@@ -2009,7 +2048,18 @@
   width: 100%;
 }
 .lv-quick-capture-input {
-  all: unset;
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  cursor: text;
+  outline: none;
+  box-shadow: none;
+  border-radius: 0;
+  appearance: none;
+  -webkit-appearance: none;
   box-sizing: border-box;
   flex: 1;
   font-family: var(--lv-serif);
@@ -2017,9 +2067,6 @@
   color: var(--lv-text-1);
   border: none;
   border-bottom: 1px solid var(--lv-rule);
-  border-radius: 0;
-  -webkit-appearance: none;
-  appearance: none;
   background: transparent;
   padding-bottom: 2px;
   line-height: 1.4;
@@ -2102,8 +2149,8 @@
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
   -webkit-mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+  mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
 }
 
 .lv-passage-photo-note {
@@ -3101,25 +3148,23 @@
 
 /* ─── Modal ────────────────────────── */
 
-/* Levart modal — scoped to .lv-modal-el to avoid affecting other Obsidian modals */
-.lv-modal-el,
-.lv-modal-el.modal {
-  background: var(--background-primary, #FAFAF8) !important;
-  border-radius: 0 !important;
-  padding: 36px 40px !important;
-  max-width: 540px !important;
-  border: 1px solid #D6D0C8 !important;
-  box-shadow: none !important;
-  opacity: 1 !important;
-  overflow-y: auto !important;
-  max-height: 92dvh !important;
+/* Levart modal — scoped to .modal.lv-modal-el for higher specificity than Obsidian's .modal */
+.modal.lv-modal-el {
+  background: var(--background-primary, #FAFAF8);
+  border-radius: 0;
+  padding: 36px 40px;
+  max-width: 540px;
+  border: 1px solid #D6D0C8;
+  box-shadow: none;
+  opacity: 1;
+  overflow-y: auto;
+  max-height: 92dvh;
 }
 
-.theme-dark .lv-modal-el,
-.theme-dark .lv-modal-el.modal {
-  background: #141412 !important;
-  border-color: #3A3830 !important;
-  box-shadow: none !important;
+.theme-dark .modal.lv-modal-el {
+  background: #141412;
+  border-color: #3A3830;
+  box-shadow: none;
 }
 
 .lv-modal-el .modal-close-button {
@@ -3187,79 +3232,79 @@
 }
 .theme-dark .lv-field-label { color: #5E5850; }
 
-.lv-field-input {
+.lv-modal-el .lv-field-input {
   font-family: "Georgia","Palatino Linotype","Book Antiqua",serif;
-  font-size: 15px !important;
-  color: #18160F !important;
-  background: transparent !important;
-  border: none !important;
-  border-bottom: 1px solid #E2DDD6 !important;
-  border-radius: 0 !important;
-  padding: 4px 0 8px !important;
+  font-size: 15px;
+  color: #18160F;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid #E2DDD6;
+  border-radius: 0;
+  padding: 4px 0 8px;
   width: 100%;
-  outline: none !important;
-  box-shadow: none !important;
+  outline: none;
+  box-shadow: none;
   transition: border-color 150ms ease;
 }
-.theme-dark .lv-field-input { color: #F0EDE6 !important; border-bottom-color: #2A2825 !important; }
+.theme-dark .lv-modal-el .lv-field-input { color: #F0EDE6; border-bottom-color: #2A2825; }
 
-.lv-field-input:focus {
-  border-bottom-color: #9A7B3C !important;
+.lv-modal-el .lv-field-input:focus {
+  border-bottom-color: #9A7B3C;
 }
 
-.lv-field-input::placeholder {
-  color: #C4BEB4 !important;
+.lv-modal-el .lv-field-input::placeholder {
+  color: #C4BEB4;
   font-style: italic;
   font-size: 13px;
   opacity: 1;
 }
-.theme-dark .lv-field-input::placeholder {
-  color: #4A4640 !important;
+.theme-dark .lv-modal-el .lv-field-input::placeholder {
+  color: #4A4640;
 }
 
 /* Time picker — keep the clock icon, just style it */
-.lv-field-input[type="time"]::-webkit-calendar-picker-indicator {
+.lv-modal-el .lv-field-input[type="time"]::-webkit-calendar-picker-indicator {
   opacity: 0.4;
   cursor: pointer;
 }
 
 /* Time inputs — keep them tight */
-.lv-field-time {
-  font-family: var(--lv-mono) !important;
-  font-size: 14px !important;
+.lv-modal-el .lv-field-time {
+  font-family: var(--lv-mono);
+  font-size: 14px;
   letter-spacing: 0.04em;
 }
 
 /* Textarea */
-.lv-field-textarea {
+.lv-modal-el .lv-field-textarea {
   font-family: "Georgia","Palatino Linotype","Book Antiqua",serif;
-  font-size: 14px !important;
+  font-size: 14px;
   font-style: italic;
-  color: var(--lv-text-2) !important;
-  background: transparent !important;
-  border: none !important;
-  border-bottom: 1px solid var(--lv-rule) !important;
-  border-radius: 0 !important;
-  padding: 4px 0 8px !important;
+  color: var(--lv-text-2);
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--lv-rule);
+  border-radius: 0;
+  padding: 4px 0 8px;
   width: 100%;
-  outline: none !important;
-  box-shadow: none !important;
+  outline: none;
+  box-shadow: none;
   resize: none;
   line-height: 1.6;
   transition: border-color 150ms ease;
 }
 
-.lv-field-textarea:focus {
-  border-bottom-color: var(--lv-gold) !important;
+.lv-modal-el .lv-field-textarea:focus {
+  border-bottom-color: var(--lv-gold);
 }
 
-.lv-field-textarea::placeholder {
-  color: #C4BEB4 !important;
+.lv-modal-el .lv-field-textarea::placeholder {
+  color: #C4BEB4;
   font-style: italic;
   opacity: 1;
 }
-.theme-dark .lv-field-textarea::placeholder {
-  color: #4A4640 !important;
+.theme-dark .lv-modal-el .lv-field-textarea::placeholder {
+  color: #4A4640;
 }
 
 /* Category chips */
@@ -3276,12 +3321,12 @@
 .lv-modal-wrap .lv-cat-chip,
 .lv-modal-el .lv-cat-chip {
   /* Reset Obsidian button styles since this lives outside .levart-root */
-  -webkit-appearance: none !important;
-  appearance: none !important;
-  background: transparent !important;
-  box-shadow: none !important;
-  outline: none !important;
-  border-radius: 0 !important;
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  box-shadow: none;
+  outline: none;
+  border-radius: 0;
 
   font-family: "Georgia","Palatino Linotype","Book Antiqua",serif;
   font-size: 11px;
@@ -3595,7 +3640,18 @@
 }
 .lv-compose-ledger-row.is-blank .lv-compose-ledger-value { opacity: 0.5; }
 .lv-compose-actual-input {
-  all: unset;
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  cursor: text;
+  outline: none;
+  box-shadow: none;
+  border-radius: 0;
+  appearance: none;
+  -webkit-appearance: none;
   box-sizing: border-box;
   font-family: var(--lv-mono);
   font-size: 13px;
@@ -3604,9 +3660,6 @@
   background: transparent;
   border: none;
   border-bottom: 1px solid transparent;
-  border-radius: 0;
-  -webkit-appearance: none;
-  appearance: none;
   width: 80px;
   min-width: 40px;
   padding-bottom: 1px;

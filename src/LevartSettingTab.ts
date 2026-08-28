@@ -23,6 +23,12 @@ export class LevartSettingTab extends PluginSettingTab {
 		this.plugin = plugin;
 	}
 
+	getSettingDefinitions() {
+		return [
+			{ key: "tripsFolder", type: "text" as const, name: "Trips folder", desc: "Where trip data is stored in your vault." },
+		];
+	}
+
 	display(): void {
 		const { containerEl } = this;
 		containerEl.empty();

@@ -28,8 +28,8 @@ export default class LevartPlugin extends Plugin {
 	onunload() {}
 
 	async loadSettings() {
-		const saved = await this.loadData();
-		this.settings = Object.assign({}, DEFAULT_SETTINGS, saved);
+		const saved = await this.loadData() as Partial<LevartSettings> | null;
+		this.settings = Object.assign({}, DEFAULT_SETTINGS, saved ?? {});
 		// Migrate: ensure new fields exist for vaults created before these settings existed
 		if (!this.settings.frontmatterFields || this.settings.frontmatterFields.length === 0) {
 			this.settings.frontmatterFields = [...DEFAULT_FRONTMATTER_FIELDS];

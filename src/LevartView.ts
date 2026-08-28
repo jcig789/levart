@@ -308,7 +308,7 @@ export class LevartView extends ItemView {
 		let exportDayEl: HTMLElement | null = null;
 		if (this.activePhase === "enquiry" && this.activeTrip) {
 			const tripId = this.activeTrip.id;
-			const currentMode = (this.plugin.settings.prospectModes?.[tripId] ?? "grid") as "grid" | "sequence";
+			const currentMode = this.plugin.settings.prospectModes?.[tripId] ?? "grid";
 			phaseNav.createSpan({ cls: "lv-phase-nav-spacer" });
 			const modeToggle = phaseNav.createDiv({ cls: "lv-mode-toggle" });
 			const gridBtn = modeToggle.createDiv({ cls: `lv-mode-btn${currentMode === "grid" ? " is-active" : ""}`, text: "Grid" });
@@ -347,20 +347,20 @@ export class LevartView extends ItemView {
 		this.clearClock();
 
 		if (this.activePhase === "enquiry") {
-			const prospectMode = (this.plugin.settings.prospectModes?.[trip.id] ?? "grid") as "grid" | "sequence";
+			const prospectMode = this.plugin.settings.prospectModes?.[trip.id] ?? "grid";
 			renderProspect(contentArea, this.app, trip, (t) => { void persist(t); },
 				this.plugin.settings.savedArrangements,
-				async (arr) => {
+				(arr) => { void (async () => {
 					this.plugin.settings.savedArrangements = arr;
 					await this.plugin.saveSettings();
-				},
+				})(); },
 				prospectMode,
-				async (mode) => {
+				(mode) => { void (async () => {
 					if (!this.plugin.settings.prospectModes) this.plugin.settings.prospectModes = {};
 					this.plugin.settings.prospectModes[trip.id] = mode;
 					await this.plugin.saveSettings();
 					this.render();
-				},
+				})(); },
 				this.plugin.settings.tripsFolder,
 				exportDayEl
 			);

@@ -1,4 +1,4 @@
-import { App, Vault, TFolder } from "obsidian";
+import { App, Vault } from "obsidian";
 import { normalizePath } from "obsidian";
 import type { Trip } from "./types";
 import { migrateTrip, tripDataPath, tripFolderPath } from "./utils";
@@ -44,7 +44,7 @@ export async function listTrips(vault: Vault, tripsFolder: string): Promise<Trip
 export async function deleteTrip(app: App, tripsFolder: string, tripId: string): Promise<void> {
 	const folder = tripFolderPath(tripsFolder, tripId);
 	const abstractFolder = app.vault.getAbstractFileByPath(folder);
-	if (abstractFolder instanceof TFolder) {
-		await app.vault.trash(abstractFolder, true);
+	if (abstractFolder) {
+		await app.fileManager.trashFile(abstractFolder);
 	}
 }

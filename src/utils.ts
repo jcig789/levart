@@ -1,5 +1,6 @@
 import { normalizePath } from "obsidian";
 import type { Trip, TripSlot } from "./types";
+import type { SlotCategory } from "./types";
 
 export const HOUR_HEIGHT = 64;
 
@@ -97,45 +98,46 @@ export function timestampFilename(prefix: string, ext = "jpg"): string {
 	return `${prefix}_${ts}.${ext}`;
 }
 
-export function migrateTripSlot(raw: any): TripSlot {
+export function migrateTripSlot(raw: Record<string, unknown>): TripSlot {
+	const rawBudget = (raw.budget as number | undefined);
 	return {
-		id: raw.id ?? crypto.randomUUID(),
-		startTime: raw.startTime ?? "09:00",
-		endTime: raw.endTime ?? "10:00",
-		title: raw.title ?? "Untitled stop",
-		location: raw.location ?? "",
-		coords: raw.coords ?? null,
-		notes: raw.notes ?? "",
-		fieldNotes: raw.fieldNotes ?? "",
+		id: (raw.id as string | undefined) ?? crypto.randomUUID(),
+		startTime: (raw.startTime as string | undefined) ?? "09:00",
+		endTime: (raw.endTime as string | undefined) ?? "10:00",
+		title: (raw.title as string | undefined) ?? "Untitled stop",
+		location: (raw.location as string | undefined) ?? "",
+		coords: (raw.coords as [number, number] | null | undefined) ?? null,
+		notes: (raw.notes as string | undefined) ?? "",
+		fieldNotes: (raw.fieldNotes as string | undefined) ?? "",
 		// migrate: budget → estimate (preserve non-zero values)
-		estimate: raw.estimate ?? (raw.budget !== undefined && raw.budget !== 0 ? raw.budget : 0),
-		actual: raw.actual ?? 0,
-		status: raw.status ?? "planned",
-		photos: raw.photos ?? [],
-		category: raw.category ?? undefined,
-		impromptu: raw.impromptu ?? undefined,
-		slotCurrency: raw.slotCurrency ?? undefined,
-		delayedBy: raw.delayedBy ?? undefined,
-		featuredPhoto: raw.featuredPhoto ?? undefined,
+		estimate: (raw.estimate as number | undefined) ?? (rawBudget !== undefined && rawBudget !== 0 ? rawBudget : 0),
+		actual: (raw.actual as number | undefined) ?? 0,
+		status: (raw.status as TripSlot["status"] | undefined) ?? "planned",
+		photos: (raw.photos as string[] | undefined) ?? [],
+		category: (raw.category as SlotCategory | undefined) ?? undefined,
+		impromptu: (raw.impromptu as boolean | undefined) ?? undefined,
+		slotCurrency: (raw.slotCurrency as string | undefined) ?? undefined,
+		delayedBy: (raw.delayedBy as number | undefined) ?? undefined,
+		featuredPhoto: (raw.featuredPhoto as string | undefined) ?? undefined,
 	};
 }
 
 export const CURRENT_SCHEMA_VERSION = 2;
 
-export function migrateTrip(raw: any): Trip {
+export function migrateTrip(raw: Record<string, unknown>): Trip {
 	return {
-		id: raw.id ?? crypto.randomUUID(),
-		name: raw.name ?? "Untitled trip",
-		destination: raw.destination ?? "",
-		startDate: raw.startDate ?? "",
-		endDate: raw.endDate ?? "",
-		coverPhoto: raw.coverPhoto ?? null,
-		days: (raw.days ?? []).map((d: any) => ({
-			date: d.date ?? "",
-			slots: (d.slots ?? []).map(migrateTripSlot),
+		id: (raw.id as string | undefined) ?? crypto.randomUUID(),
+		name: (raw.name as string | undefined) ?? "Untitled trip",
+		destination: (raw.destination as string | undefined) ?? "",
+		startDate: (raw.startDate as string | undefined) ?? "",
+		endDate: (raw.endDate as string | undefined) ?? "",
+		coverPhoto: (raw.coverPhoto as string | null | undefined) ?? null,
+		days: ((raw.days as Record<string, unknown>[] | undefined) ?? []).map((d: Record<string, unknown>) => ({
+			date: (d.date as string | undefined) ?? "",
+			slots: ((d.slots as Record<string, unknown>[] | undefined) ?? []).map(migrateTripSlot),
 		})),
-		createdAt: raw.createdAt ?? new Date().toISOString(),
-		currency: raw.currency ?? "",
+		createdAt: (raw.createdAt as string | undefined) ?? new Date().toISOString(),
+		currency: (raw.currency as string | undefined) ?? "",
 		schemaVersion: CURRENT_SCHEMA_VERSION,
 	};
 }
