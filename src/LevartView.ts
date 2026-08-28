@@ -141,7 +141,7 @@ export class LevartView extends ItemView {
 					e.stopPropagation();
 					new DeleteTripModal(this.app, trip.name, () => {
 						void (async () => {
-							await deleteTrip(this.app, this.plugin.settings.tripsFolder, trip.id);
+							await deleteTrip(this.app.vault, this.plugin.settings.tripsFolder, trip.id);
 							if (this.activeTrip?.id === trip.id) this.activeTrip = null;
 							await this.loadTrips();
 							this.render();

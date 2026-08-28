@@ -1,4 +1,4 @@
-import { App, Vault } from "obsidian";
+import { Vault } from "obsidian";
 import { normalizePath } from "obsidian";
 import type { Trip } from "./types";
 import { migrateTrip, tripDataPath, tripFolderPath } from "./utils";
@@ -42,10 +42,9 @@ export async function listTrips(vault: Vault, tripsFolder: string): Promise<Trip
 	return trips.sort((a, b) => a.startDate.localeCompare(b.startDate));
 }
 
-export async function deleteTrip(app: App, tripsFolder: string, tripId: string): Promise<void> {
+export async function deleteTrip(vault: Vault, tripsFolder: string, tripId: string): Promise<void> {
 	const folder = tripFolderPath(tripsFolder, tripId);
-	const abstractFolder = app.vault.getAbstractFileByPath(folder);
-	if (abstractFolder) {
-		await app.fileManager.trashFile(abstractFolder);
+	if (await vault.adapter.exists(folder)) {
+		await vault.adapter.rmdir(folder, true);
 	}
 }
