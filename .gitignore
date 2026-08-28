@@ -4,3 +4,9 @@ main.js
 .env
 sample-map.html
 sample-map-leaflet.html
+
+# Internal development documents — not for public repo
+LAYOUT_SPEC.md
+UIUX_SPEC.md
+READINESS.md
+TIER4_SPEC.md
